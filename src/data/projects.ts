@@ -1,5 +1,12 @@
 export const projects = [
   {
+    title: 'O’Services | Aires Acondicionados',
+    description: 'Landing page moderna para instalación de minisplits, paneles solares y servicios eléctricos. Animaciones al hacer scroll, galería y cotización automática.',
+    tecnologias: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Swiper'],
+    imageUrl: '/oservices.png',
+    projectLink: 'https://airesacondicionados.netlify.app/', 
+  },
+  {
     title: 'Guitar LA',
     description: 'Carrito de compras de guitarras con interfaz intuitiva.',
     tecnologias: ['React', 'JavaScript', 'Bootstrap', 'CSS'],
