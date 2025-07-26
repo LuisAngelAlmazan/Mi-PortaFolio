@@ -18,7 +18,7 @@ export const projects = [
     description: 'Backend escalable con autenticación, Cloudinary y Swagger.',
     tecnologias: ['NestJS', 'PostgreSQL', 'MongoDB', 'Docker'],
     imageUrl: '/Ecomerce.png',
-    projectLink: 'https://github.com/LuisAngelAlmazan/ecommerce-backend',
+    projectLink: 'https://github.com/LuisAngelAlmazan/Ecommerse',
   },
   {
     title: 'Rental Biker | Tour en Bicicleta',
