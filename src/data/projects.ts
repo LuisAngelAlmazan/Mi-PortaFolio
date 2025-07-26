@@ -31,7 +31,7 @@ export const projects = [
     title: 'Plataforma de Rifas (En desarrollo)',
     description: 'Sistema escalable de rifas con frontend atractivo y planes por suscripción. Incluye reserva de boletos, panel admin y automatización.',
     tecnologias: ['Next.js', 'Tailwind CSS', 'TypeScript', 'Node.js (futuro)'],
-    imageUrl: '/rifas.png',
+    imageUrl: '/rifaspro.png',
     projectLink: 'https://rifaspro.netlify.app/',
   }
 ];
