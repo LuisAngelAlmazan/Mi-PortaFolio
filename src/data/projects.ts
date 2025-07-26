@@ -18,7 +18,7 @@ export const projects = [
     description: 'Backend escalable con autenticación, Cloudinary y Swagger.',
     tecnologias: ['NestJS', 'PostgreSQL', 'MongoDB', 'Docker'],
     imageUrl: '/Ecomerce.png',
-    projectLink: 'https://github.com/LuisAngelAlmazan/Ecommerse',
+    projectLink: 'https://github.com/LuisAngelAlmazan/ecommerce-backend',
   },
   {
     title: 'Rental Biker | Tour en Bicicleta',
@@ -27,4 +27,11 @@ export const projects = [
     imageUrl: '/rentalbike.png',
     projectLink: 'https://rentalbiker.netlify.app/',
   },
+  {
+    title: 'Plataforma de Rifas (En desarrollo)',
+    description: 'Sistema escalable de rifas con frontend atractivo y planes por suscripción. Incluye reserva de boletos, panel admin y automatización.',
+    tecnologias: ['Next.js', 'Tailwind CSS', 'TypeScript', 'Node.js (futuro)'],
+    imageUrl: '/rifas.png',
+    projectLink: 'https://rifaspro.netlify.app/',
+  }
 ];
