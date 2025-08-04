@@ -26,13 +26,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       variants={cardVariants}
       whileHover={{ scale: 1.05 }}
       transition={{ type: 'spring', stiffness: 300 }}
-      className="flex flex-col bg-white rounded-lg shadow-md p-6 h-full"
+      className="flex flex-col bg-white rounded-lg shadow-md p-6 h-full w-full max-w-sm mx-auto"
     >
       {imageUrl && (
         <img
           src={imageUrl}
           alt={title}
-          className="w-full h-40 object-cover rounded-md mb-4"
+          className="w-full aspect-video object-cover rounded-md mb-4"
         />
       )}
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
@@ -51,7 +51,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         href={projectLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-auto inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer text-center"
+        className="mt-auto inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-center"
       >
         Ver Proyecto
       </a>
