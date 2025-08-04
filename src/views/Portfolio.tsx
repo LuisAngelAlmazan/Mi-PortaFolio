@@ -78,22 +78,24 @@ export default function Portfolio() {
           </p>
         </motion.section>
 
-        {/* Sección de Proyectos */}
-        <motion.section
-          ref={projectsRef}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={fadeUp}
-          className="scroll-mt-32"
-        >
-          <h2 className="text-3xl font-bold text-center mb-8">Proyectos</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, index) => (
-              <ProjectCard key={index} {...project} />
-            ))}
-          </div>
-        </motion.section>
+       {/* Sección de Proyectos */}
+<motion.section
+  ref={projectsRef}
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.3 }}
+  variants={fadeUp}
+  className="scroll-mt-32"
+>
+  <h2 className="text-3xl font-bold text-center mb-8">Proyectos</h2>
+  
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {projects.map((project, index) => (
+      <ProjectCard key={index} {...project} />
+    ))}
+  </div>
+</motion.section>
+
 
         {/* Contacto */}
        <motion.section
