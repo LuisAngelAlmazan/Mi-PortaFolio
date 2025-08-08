@@ -21,7 +21,7 @@ export const projects = [
     projectLink: 'https://rifaspro.netlify.app/',
   },
   {
-    title: "Cacao",
+    title: "Cacao (en desarrollo)",
     description:
     "Landing page enfocada en productos naturales y artesanales, con pedidos directos por WhatsApp. Presenta la historia, beneficios y testimonios para conectar con el cliente y facilitar la conversión.",
     tecnologias: ["React", "Tailwind", "WhatsApp API", "UX/UI", "Diseño Responsive"],
