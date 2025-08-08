@@ -21,12 +21,12 @@ export const projects = [
     projectLink: 'https://rifaspro.netlify.app/',
   },
   {
-  title: "Cacao",
-  description:
+    title: "Cacao",
+    description:
     "Landing page enfocada en productos naturales y artesanales, con pedidos directos por WhatsApp. Presenta la historia, beneficios y testimonios para conectar con el cliente y facilitar la conversión.",
-  tecnologias: ["React", "Tailwind", "WhatsApp API", "UX/UI", "Diseño Responsive"],
-  projectLink: "https://cacao.example.com", 
-  imageUrl: "/images/projects/cacao.webp" 
+    tecnologias: ["React", "Tailwind", "WhatsApp API", "UX/UI", "Diseño Responsive"],
+    imageUrl: '/cacao.png', 
+    projectLink: "https://cacao.example.com", 
 },
 {
     title: 'Guitar LA',
