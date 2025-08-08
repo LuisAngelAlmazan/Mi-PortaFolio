@@ -25,7 +25,7 @@ export const projects = [
     description:
     "Landing page enfocada en productos naturales y artesanales, con pedidos directos por WhatsApp. Presenta la historia, beneficios y testimonios para conectar con el cliente y facilitar la conversión.",
     tecnologias: ["React", "Tailwind", "WhatsApp API", "UX/UI", "Diseño Responsive"],
-    imageUrl: '/cacao.png', 
+    imageUrl: '/cacao1.png', 
     projectLink: "https://cacao.example.com", 
 },
 {
