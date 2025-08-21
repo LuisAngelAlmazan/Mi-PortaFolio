@@ -26,8 +26,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       variants={cardVariants}
       whileHover={{ scale: 1.05 }}
       transition={{ type: 'spring', stiffness: 300 }}
-      className="flex flex-col bg-white rounded-lg shadow-md p-6 h-full w-full max-w-sm mx-auto border-4 border-red-500"
-      style={{ background: '#ffeedd' }}
+  className="flex flex-col bg-white rounded-lg shadow-md p-6 h-full w-full max-w-sm mx-auto"
     >
       {imageUrl && (
         <img

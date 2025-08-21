@@ -1,14 +1,32 @@
-// src/views/Portfolio.tsx
 import ProjectCard from '../components/ProjectCard';
 import Navbar from '../components/Navbar';
 import { projects } from '../data/projects';
-import { useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
+
+function useVisibleCantidad() {
+  const [visible, setVisible] = useState(6);
+
+  useEffect(() => {
+    function calcularVisible() {
+      if (window.innerWidth < 640) {
+        setVisible(2);
+      } else {
+        setVisible(6);
+      }
+    }
+    calcularVisible();
+    window.addEventListener("resize", calcularVisible);
+    return () => window.removeEventListener("resize", calcularVisible);
+  }, []);
+
+  return visible;
+}
 
 export default function Portfolio() {
   const aboutRef = useRef<HTMLDivElement>(null);
@@ -22,6 +40,37 @@ export default function Portfolio() {
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
+
+  // Carrusel para proyectos
+  const CANTIDAD_VISIBLE = useVisibleCantidad();
+  const [start, setStart] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      avanzar();
+    }, 7000);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line
+  }, [start, CANTIDAD_VISIBLE]);
+
+  function avanzar() {
+    setStart(prev => (prev + CANTIDAD_VISIBLE) % projects.length);
+  }
+
+  function retroceder() {
+    setStart(prev => (prev - CANTIDAD_VISIBLE + projects.length) % projects.length);
+  }
+
+  // Agrupa los visibles en dos filas
+  const visibles = [];
+  for (let i = 0; i < CANTIDAD_VISIBLE; i++) {
+    visibles.push(projects[(start + i) % projects.length]);
+  }
+  const mitad = Math.ceil(visibles.length / 2);
+  const filaArriba = visibles.slice(0, mitad);
+  const filaAbajo = visibles.slice(mitad);
+
+  const totalSlides = Math.ceil(projects.length / CANTIDAD_VISIBLE);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -77,7 +126,7 @@ export default function Portfolio() {
           </p>
         </motion.section>
 
-        {/* Sección de Proyectos */}
+        {/* Carrusel de Proyectos en dos filas */}
         <motion.section
           ref={projectsRef}
           initial="hidden"
@@ -87,88 +136,109 @@ export default function Portfolio() {
           className="scroll-mt-32"
         >
           <h2 className="text-3xl font-bold text-center mb-8">Proyectos</h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, index) => (
-              <ProjectCard key={index} {...project} />
+          <div className="flex items-center justify-center gap-2">
+            <button
+              onClick={retroceder}
+              className="bg-gray-200 hover:bg-gray-300 rounded-full p-2 text-xl"
+              aria-label="Anterior"
+            >
+              &#8592;
+            </button>
+            <div className="flex flex-col gap-6 w-full max-w-4xl">
+              {/* Fila arriba */}
+              <div className={
+                CANTIDAD_VISIBLE === 2
+                  ? "grid grid-cols-1 grid-rows-1 gap-6"
+                  : "grid grid-cols-3 grid-rows-1 gap-6"
+              }>
+                {filaArriba.map((project, i) => (
+                  <div key={i} className="flex justify-center">
+                    <ProjectCard {...project} />
+                  </div>
+                ))}
+              </div>
+              {/* Fila abajo */}
+              <div className={
+                CANTIDAD_VISIBLE === 2
+                  ? "grid grid-cols-1 grid-rows-1 gap-6"
+                  : "grid grid-cols-3 grid-rows-1 gap-6"
+              }>
+                {filaAbajo.map((project, i) => (
+                  <div key={i} className="flex justify-center">
+                    <ProjectCard {...project} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button
+              onClick={avanzar}
+              className="bg-gray-200 hover:bg-gray-300 rounded-full p-2 text-xl"
+              aria-label="Siguiente"
+            >
+              &#8594;
+            </button>
+          </div>
+          <div className="flex justify-center mt-4 gap-2">
+            {Array.from({ length: totalSlides }).map((_, i) => (
+              <span
+                key={i}
+                className={`inline-block w-3 h-3 rounded-full ${i === Math.floor(start / CANTIDAD_VISIBLE) ? "bg-blue-700" : "bg-gray-300"}`}
+              />
             ))}
           </div>
         </motion.section>
 
-       {/* Contacto */}
-<motion.section
-  ref={contactRef}
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true, amount: 0.3 }}
-  variants={fadeUp}
-  className="text-center space-y-6"
->
-  <h2 className="text-3xl font-bold mb-4">Contáctame</h2>
-  <p className="text-gray-700 mb-4">
-    ¿Quieres trabajar conmigo? ¡Estoy disponible para nuevas oportunidades!
-  </p>
-
-  <div className="flex justify-center gap-8 text-blue-600 text-2xl">
-    {/* LinkedIn */}
-    <a
-      href="https://www.linkedin.com/in/luis-angel-almazán-de-jesús-1404181a9"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="LinkedIn"
-      className="hover:text-blue-800 transition"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.23 8.14h4.5v11.36h-4.5V8.14zm7.5 0h4.31v1.58h.06c.6-1.14 2.07-2.34 4.25-2.34 4.55 0 5.39 2.99 5.39 6.88v7.24h-4.5v-6.41c0-1.53-.03-3.49-2.13-3.49-2.13 0-2.46 1.66-2.46 3.38v6.52h-4.5V8.14z" />
-      </svg>
-    </a>
-
-    {/* GitHub */}
-    <a
-      href="https://github.com/LuisAngelAlmazan"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="GitHub"
-      className="hover:text-gray-800 transition"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path d="M12 0a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4-1.61-4-1.61a3.15 3.15 0 00-1.32-1.74c-1.08-.74.08-.72.08-.72a2.5 2.5 0 011.83 1.23 2.57 2.57 0 003.5 1 2.58 2.58 0 01.76-1.61c-2.66-.3-5.47-1.34-5.47-5.93a4.63 4.63 0 011.23-3.2 4.3 4.3 0 01.12-3.16s1-.32 3.3 1.23a11.4 11.4 0 016 0c2.31-1.55 3.3-1.23 3.3-1.23a4.3 4.3 0 01.12 3.16 4.63 4.63 0 011.23 3.2c0 4.6-2.81 5.62-5.49 5.92a2.88 2.88 0 01.82 2.23v3.3c0 .32.22.7.83.58A12 12 0 0012 0z" />
-      </svg>
-    </a>
-
-    {/* Gmail */}
-    <a
-      href="mailto:almazanluis23@gmail.com"
-      aria-label="Correo Electrónico"
-      className="hover:text-red-600 transition text-red-600"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8" />
-        <rect x="3" y="5" width="18" height="14" rx="2" ry="2" />
-      </svg>
-    </a>
-  </div>
-</motion.section>
-
+        {/* Contacto */}
+        <motion.section
+          ref={contactRef}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeUp}
+          className="text-center space-y-6"
+        >
+          <h2 className="text-3xl font-bold mb-4">Contáctame</h2>
+          <p className="text-gray-700 mb-4">
+            ¿Quieres trabajar conmigo? ¡Estoy disponible para nuevas oportunidades!
+          </p>
+          <div className="flex justify-center gap-8 text-blue-600 text-2xl">
+            {/* LinkedIn */}
+            <a
+              href="https://www.linkedin.com/in/luis-angel-almazán-de-jesús-1404181a9"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="hover:text-blue-800 transition"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.23 8.14h4.5v11.36h-4.5V8.14zm7.5 0h4.31v1.58h.06c.6-1.14 2.07-2.34 4.25-2.34 4.55 0 5.39 2.99 5.39 6.88v7.24h-4.5v-6.41c0-1.53-.03-3.49-2.13-3.49-2.13 0-2.46 1.66-2.46 3.38v6.52h-4.5V8.14z" />
+              </svg>
+            </a>
+            {/* GitHub */}
+            <a
+              href="https://github.com/LuisAngelAlmazan"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className="hover:text-gray-800 transition"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4-1.61-4-1.61a3.15 3.15 0 00-1.32-1.74c-1.08-.74.08-.72.08-.72a2.5 2.5 0 011.83 1.23 2.57 2.57 0 003.5 1 2.58 2.58 0 01.76-1.61c-2.66-.3-5.47-1.34-5.47-5.93a4.63 4.63 0 011.23-3.2 4.3 4.3 0 01.12-3.16s1-.32 3.3 1.23a11.4 11.4 0 016 0c2.31-1.55 3.3-1.23 3.3-1.23a4.3 4.3 0 01.12 3.16 4.63 4.63 0 011.23 3.2c0 4.6-2.81 5.62-5.49 5.92a2.88 2.88 0 01.82 2.23v3.3c0 .32.22.7.83.58A12 12 0 0012 0z" />
+              </svg>
+            </a>
+            {/* Gmail */}
+            <a
+              href="mailto:almazanluis23@gmail.com"
+              aria-label="Correo Electrónico"
+              className="hover:text-red-600 transition text-red-600"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8" />
+                <rect x="3" y="5" width="18" height="14" rx="2" ry="2" />
+              </svg>
+            </a>
+          </div>
+        </motion.section>
       </div>
     </div>
   );
